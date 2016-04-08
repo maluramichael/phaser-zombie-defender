@@ -1,0 +1,21 @@
+{
+  "name": "mampfmampf",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Michael Malura <maluramichael@googlemail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "phaser": "^2.4.6",
+    "bootstrap": "^3.3.6"
+  }
+}
