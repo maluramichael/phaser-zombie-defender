@@ -1,47 +1,5 @@
 'use strict';
 
-class Map {
-	constructor(game) {
-		this.game = game;
-	}
-
-	preload() {
-		const game = this.game;
-		game.load.image('sheet', 'assets/RPGpack_sheet_2X.png');
-
-		this.map = null;
-	}
-
-	create() {
-		const game = this.game;
-
-		// Map
-		const tileSize = 128;
-		const grasMap =
-			'0,1,1,1,1,2\n' +
-			'20,21,21,21,21,22\n' +
-			'20,21,21,21,21,22\n' +
-			'20,21,21,21,21,22\n' +
-			'20,21,21,21,21,22\n' +
-			'40,41,41,41,41,42\n';
-
-
-		game.cache.addTilemap('dynamicMap', null, grasMap, Phaser.Tilemap.CSV);
-		this.map = game.add.tilemap('dynamicMap', tileSize, tileSize);
-		this.map.addTilesetImage('sheet', 'sheet', tileSize, tileSize);
-		this.layer = this.map.createLayer(0);
-		this.layer.resizeWorld();
-
-
-		// Objects
-
-	}
-
-	update() {
-		const game = this.game;
-	}
-}
-
 class Boom extends Phaser.State {
 
 	preload() {
@@ -49,12 +7,16 @@ class Boom extends Phaser.State {
 		this.game.load.image('canon', 'assets/canon.png');
 		this.game.load.image('ball', 'assets/ball.png');
 		this.game.load.image('xp', 'assets/xp.png');
+		this.game.load.image('background', 'assets/background.png');
 		this.game.load.spritesheet('zombie', 'assets/zombie.png', 32, 32);
+
+		this.game.load.tilemap('map', 'assets/tilemaps/map.json', null, Phaser.Tilemap.TILED_JSON);
+		this.game.load.image('tiles', 'assets/tiles.png');
 	}
 
 	create() {
 		// variables
-		this.playerPosition = new Phaser.Point(100, this.game.world.height);
+		this.playerPosition = new Phaser.Point(64, this.game.world.height - 64);
 		this.shootStrength = 300;
 		this.enemySpeed = .1;
 		this.xp = 0;
@@ -106,6 +68,10 @@ class Boom extends Phaser.State {
 
 		this.canon.anchor.setTo(0.5, 1);
 		this.base.anchor.setTo(0.5, 0.5);
+
+		this.map = this.game.add.tilemap('map');
+		this.map.addTilesetImage('Grass', 'tiles');
+		this.layer = this.map.createLayer('Map');
 
 		this.xpEmitter = this.game.add.emitter(0, 0, 100);
 		this.xpEmitter.makeParticles('xp');
@@ -169,7 +135,7 @@ class Boom extends Phaser.State {
 		var enemy = this.enemies.getFirstDead();
 		if (enemy === null || enemy === undefined) return;
 		enemy.revive();
-		enemy.reset(this.game.width, this.game.height);
+		enemy.reset(this.game.width, this.game.height - 64);
 	}
 
 	shoot() {
@@ -192,9 +158,8 @@ class Boom extends Phaser.State {
 
 class Game {
 	constructor() {
-		this.game = new Phaser.Game(1200, 400, Phaser.AUTO);
+		this.game = new Phaser.Game(1280, 448, Phaser.AUTO);
 
-		this.game.state.add('map', new Map(this.game));
 		this.game.state.add('boom', new Boom(this.game));
 		this.game.state.start('boom');
 	}

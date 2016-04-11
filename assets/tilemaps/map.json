@@ -1,0 +1,49 @@
+{
+	"layers": [
+		{
+			"data": [
+				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+				26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26
+			],
+			"name": "Map",
+			"opacity": 1,
+			"properties": {
+				"time": "1000"
+			},
+			"type": "tilelayer",
+			"visible": true,
+			"width": 20,
+			"height": 7,
+			"x": 0,
+			"y": 0
+		}
+	],
+	"orientation": "orthogonal",
+	"properties": {
+		"mapProp": "123"
+	},
+	"tileheight": 64,
+	"tilewidth": 64,
+	"tilesets": [
+		{
+			"firstgid": 1,
+			"image": "tiles.png",
+			"imageheight": 490,
+			"imagewidth": 490,
+			"margin": 0,
+			"name": "Grass",
+			"properties": {},
+			"spacing": 0,
+			"tileheight": 64,
+			"tilewidth": 64
+		}
+	],
+	"version": 1,
+	"height": 490,
+	"width": 490
+}
