@@ -48,8 +48,8 @@ class Boom extends Phaser.State {
 		this.game.load.image('base', 'assets/base.png');
 		this.game.load.image('canon', 'assets/canon.png');
 		this.game.load.image('ball', 'assets/ball.png');
+		this.game.load.image('xp', 'assets/xp.png');
 		this.game.load.spritesheet('zombie', 'assets/zombie.png', 32, 32);
-
 	}
 
 	create() {
@@ -57,6 +57,8 @@ class Boom extends Phaser.State {
 		this.playerPosition = new Phaser.Point(100, this.game.world.height);
 		this.shootStrength = 300;
 		this.enemySpeed = .1;
+		this.xp = 0;
+		this.xpToAdd = 0;
 
 		// game
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -67,6 +69,13 @@ class Boom extends Phaser.State {
 		this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(this.shoot, this);
 		this.game.input.keyboard.addKey(Phaser.Keyboard.X).onDown.add(this.spawnEnemy, this);
 
+		// ui
+		this.xpCounterImage = this.game.add.sprite(16, 16, 'xp');
+		this.xpCounterText = this.game.add.text(48, 16, '0', {
+			fill: 'white',
+			font: '20px Arial'
+		});
+
 		// sprites
 		this.enemies = this.game.add.group();
 		this.enemies.enableBody = true;
@@ -75,7 +84,6 @@ class Boom extends Phaser.State {
 		this.balls = this.game.add.group();
 		this.balls.enableBody = true;
 		this.balls.physicsBodyType = Phaser.Physics.ARCADE;
-
 
 		for (var x = 0; x < 10; x++) {
 			var ball = this.game.add.sprite(0, 0, 'ball');
@@ -98,6 +106,10 @@ class Boom extends Phaser.State {
 
 		this.canon.anchor.setTo(0.5, 1);
 		this.base.anchor.setTo(0.5, 0.5);
+
+		this.xpEmitter = this.game.add.emitter(0, 0, 100);
+		this.xpEmitter.makeParticles('xp');
+		this.xpEmitter.gravitiy = 0;
 	}
 
 	update() {
@@ -123,13 +135,24 @@ class Boom extends Phaser.State {
 				enemy.x -= this.enemySpeed * this.game.time.elapsed;
 			}
 		}
+
+		if (this.xpToAdd - 1 >= 0) {
+			this.xp++;
+			this.xpToAdd--;
+			this.xpCounterText.text = this.xp;
+		}
 	}
 
 	render() {
-		this.game.debug.spriteInfo(this.canon, 32, 32);
 	}
 
 	hitHandler(ball, enemy) {
+		this.xpEmitter.x = enemy.x;
+		this.xpEmitter.y = enemy.y;
+
+		this.xpEmitter.start(true, 2000, null, 10);
+		this.xpToAdd += 10;
+
 		ball.kill();
 		enemy.kill();
 	}
